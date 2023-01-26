@@ -1,13 +1,12 @@
-import { useState } from 'react';
 import { useMainListener } from '../hooks/useSocketListener';
-import './App.scss';
+import { Header } from './layout/Header/Header';
 
 export const App = () => {
     useMainListener();
 
     return (
         <div className="app">
-        
+            <Header />
         </div>
     )
 };
