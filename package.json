@@ -11,9 +11,13 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.7.0",
-    "socket.io-client": "^4.5.4"
+    "react-spinners": "^0.13.8",
+    "socket.io-client": "^4.5.4",
+    "zod": "^3.20.2",
+    "zod-validation-error": "^0.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

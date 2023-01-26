@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { App } from './components/App';
+import { PromisesProvider } from './contexts/promises.context';
 
 import { SocketProvider } from './contexts/socket.context';
 
@@ -11,9 +12,11 @@ import './styles/index.scss';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <SocketProvider>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
+            <PromisesProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </PromisesProvider>
         </SocketProvider>
     </React.StrictMode>,
 );

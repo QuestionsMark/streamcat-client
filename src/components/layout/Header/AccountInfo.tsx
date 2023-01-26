@@ -2,7 +2,7 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { MdContentCopy } from 'react-icons/md';
 import { useSocket } from '../../../contexts/socket.context';
 import { Button } from '../../common/Button';
-import { MiniLoading } from '../../common/MiniLoading';
+import { Loading } from '../../common/Loading';
 
 export const AccountInfo = () => {
     const { socketId } = useSocket();
@@ -19,7 +19,7 @@ export const AccountInfo = () => {
                 <Button className="btn--icon account-info__btn" onClick={onClick}>
                     <MdContentCopy className="account-info__copy-icon" />
                 </Button>
-            </div> : <MiniLoading />}
+            </div> : <Loading className="account-info__loading" />}
         </div>
     );
 };

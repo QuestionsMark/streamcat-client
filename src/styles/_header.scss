@@ -63,6 +63,13 @@
         color: $main-color;
     }
 
+    &__loading {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     &__content {
         flex-grow: 1;
         display: flex;
