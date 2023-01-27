@@ -6,17 +6,20 @@ import { App } from './components/App';
 import { PromisesProvider } from './contexts/promises.context';
 
 import { SocketProvider } from './contexts/socket.context';
+import { UserProvider } from './contexts/user.context';
 
 import './styles/index.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <SocketProvider>
-            <PromisesProvider>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </PromisesProvider>
+            <UserProvider>
+                <PromisesProvider>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </PromisesProvider>
+            </UserProvider>
         </SocketProvider>
-    </React.StrictMode>,
+    // </React.StrictMode>,
 );

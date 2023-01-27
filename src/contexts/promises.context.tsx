@@ -21,7 +21,7 @@ const defaultPromisesContextValue: PromisesContextValue = {
 
 export const PromisesContext = createContext<PromisesContextValue>(defaultPromisesContextValue);
 
-export const usePromisesContext = () => useContext(PromisesContext);
+export const usePromises = () => useContext(PromisesContext);
 
 export const PromisesProvider = ({ children }: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
