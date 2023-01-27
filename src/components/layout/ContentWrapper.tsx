@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { usePromisesContext } from '../../contexts/promises.context';
+import { usePromises } from '../../contexts/promises.context';
 
 interface Props {
     children: ReactNode;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const ContentWrapper = ({ children, className, withAside }: Props) => {
-    const { loading } = usePromisesContext();
+    const { loading } = usePromises();
 
     return (
         <div className={`wrapper${loading ? ' blur': ''}${withAside ? ' wrapper--row' : ''}${className ? ' ' + className : ''}`}>
