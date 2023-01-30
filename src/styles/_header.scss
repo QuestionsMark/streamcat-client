@@ -35,7 +35,9 @@
     }
 
     &__link {
-        padding: 15px;
+        display: block;
+        width: max-content;
+        padding: 0 15px;
         line-height: 50px;
         color: $font-color2;
         font-weight: bold;
@@ -80,9 +82,5 @@
 
     &__id {
         font-size: 14px;
-    }
-
-    &__btn {
-        font-size: 16px;
     }
 }

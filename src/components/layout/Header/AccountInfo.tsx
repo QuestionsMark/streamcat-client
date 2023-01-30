@@ -16,7 +16,7 @@ export const AccountInfo = () => {
             <FaRegUserCircle className="account-info__icon" />
             {socketId ? <div className="account-info__content">
                 <p className="account-info__id">{socketId}</p>
-                <Button className="btn--icon account-info__btn" onClick={onClick}>
+                <Button className="btn--icon account-info__btn" onClick={onClick} type="button">
                     <MdContentCopy className="account-info__copy-icon" />
                 </Button>
             </div> : <Loading className="account-info__loading" />}
