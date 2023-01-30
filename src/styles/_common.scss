@@ -167,6 +167,12 @@ body {
         background-color: darken($main-color2, 20%);
     }
 
+    &:disabled {
+        color: #444;
+        background-color: #6998a8;
+        cursor: default;
+    }
+
     &--icon {
         flex-shrink: 0;
         display: flex;

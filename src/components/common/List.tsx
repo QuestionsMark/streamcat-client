@@ -1,13 +1,13 @@
-import { OlHTMLAttributes, ReactNode } from 'react';
+import { forwardRef, OlHTMLAttributes, ReactNode } from 'react';
 
 interface Props extends OlHTMLAttributes<HTMLUListElement> {
     children: ReactNode;
 }
 
-export const List = ({ children, className, ...rest }: Props) => {
+export const List = forwardRef<HTMLUListElement, Props>(({ children, className, ...rest }, ref) => {
     return (
-        <ul {...rest} className={`list${className ? ' ' + className : ''}`}>
+        <ul ref={ref} {...rest} className={`list${className ? ' ' + className : ''}`}>
             {children}
         </ul>
     );
-};
+});

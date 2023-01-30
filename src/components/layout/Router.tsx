@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { RoomProvider } from '../../contexts/room.context';
 import { useSocket } from '../../contexts/socket.context';
 import { LoadingScreen } from '../popups/LoadingScreen';
 import { GetRoom } from '../views/GetRoom';
@@ -11,7 +12,7 @@ export const Router = () => {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/room" element={<GetRoom />} />
-            <Route path="/room/:id" element={socketId ? <Room /> : <LoadingScreen />} />
+            <Route path="/room/:id" element={socketId ? <RoomProvider><Room /></RoomProvider> : <LoadingScreen />} />
         </Routes>
     );
 };

@@ -26,7 +26,7 @@ export const Controls = ({ dispatch, state }: Props) => {
         dispatch({ type: 'PLAYED_CHANGE', payload: duration * Number(e.target.value) });
     }
 
-    const handlePlayingChange = (played: number) => {
+    const handlePlayingChange = () => {
         dispatch({ type: 'PLAYING_CHANGE', payload: !playing });
         if (!socket) return;
         socket.emit(playing ? 'video-pause-request' : 'video-play-request', playing ? undefined : { date: new Date().getTime(), played } as VideoPlayRequestPayload);
@@ -36,8 +36,11 @@ export const Controls = ({ dispatch, state }: Props) => {
 
     const handleProgressMouseUp = (e: MouseEvent<HTMLInputElement>) => {
         if (!player) return;
-        player.seekTo(duration * Number(e.currentTarget.value));
-        dispatch({ type: 'PROGRESS_MOUSE_UP_CHANGE' })
+        dispatch({ type: 'PROGRESS_MOUSE_UP_CHANGE' });
+        if (!socket) return;
+        socket.emit('video-seek-request', { date: new Date().getTime(), played });
+        // player.seekTo(duration * Number(e.currentTarget.value));
+        
     };
 
     const handleFullScreen = () => {
@@ -51,7 +54,7 @@ export const Controls = ({ dispatch, state }: Props) => {
                 <Input type="range" min={0} max={1} step={0.01} value={Number.isFinite(played / duration) ? played / duration : 0} onChange={handleProgressChange} onMouseDown={handleProgressMouseDown} onMouseUp={handleProgressMouseUp} className="form__inp-range player__controls-range" />
             </div>
             <div className="player__controls-playing">
-                <Button type="button" onClick={() => handlePlayingChange(played)} className="btn--icon player__controls-btn">
+                <Button type="button" onClick={handlePlayingChange} className="btn--icon player__controls-btn">
                     {playing ? <BsPauseFill /> : <BsPlayFill />}
                 </Button>
             </div>
