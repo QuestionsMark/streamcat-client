@@ -150,7 +150,7 @@ export const Room = () => {
                             placeholder="Message"
                             className="room__chat-inp"
                         />
-                        <Button type="submit" className="btn--icon room__chat-submit">
+                        <Button type="submit" className="btn--icon room__chat-submit" disabled={message.length === 0}>
                             <TbSend className="room__chat-icon" />
                         </Button>
                     </form>
