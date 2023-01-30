@@ -1,0 +1,24 @@
+.player {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: black;
+
+    &__controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0 10px;
+
+        &-progress {
+            flex-basis: 100%;
+        }
+
+        &-duration {
+            flex-grow: 1;
+            font-family: $const-font-family;
+        }
+    }
+
+}
