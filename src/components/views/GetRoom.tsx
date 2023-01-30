@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { fetchTool } from "../../utils/api.util";
+import { usePromises } from "../../contexts/promises.context";
+import { fetchTool, minimalDelayFunction } from "../../utils/api.util";
 import { Button } from "../common/Button";
 import { Section } from "../common/Section";
 import { Title } from "../common/Title";
@@ -7,12 +8,18 @@ import { ContentWrapper } from "../layout/ContentWrapper";
 import { Main } from "../layout/Main";
 
 export const GetRoom = () => {
+    const { setLoading } = usePromises();
+
     const navigate = useNavigate();
 
     const handleClick = async () => {
-        const response = await fetchTool<string>('room', 'POST');
-        if (!response.status) return console.log(response.message);
-        navigate(`/room/${response.results}`);
+        setLoading(true);
+        const { delayTime, response } = await minimalDelayFunction(() => fetchTool('room', 'POST'));
+        setTimeout(() => {
+            setLoading(false);
+            if (!response.status) return console.log(response.message);
+            navigate(`/room/${response.results}`);
+        }, delayTime);
     };
 
     return (
