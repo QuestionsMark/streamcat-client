@@ -1,15 +1,11 @@
-import { useReducer } from "react";
 import ReactPlayer from "react-player";
 import { OnProgressProps } from "react-player/base";
-import { useSocket } from "../contexts/socket.context";
-import { defaultPlayerState, playerReducer } from "../reducers/player.reducer";
+import { useRoom } from "../contexts/room.context";
 import { RoomJoinedPayload, VideoPlayResponsePayload, VideoSeekResponsePayload } from "../types";
 import { useCreateListener } from "./useSocketListener";
 
 export const usePlayer = () => {
-    const { socket, socketId } = useSocket();
-
-    const [state, dispatch] = useReducer(playerReducer, defaultPlayerState);
+    const { dispatch, state } = useRoom();
     const { played, player, seeking } = state;
 
     const onEnded = () => {
@@ -72,9 +68,10 @@ export const usePlayer = () => {
         // dispatch({ type: 'PLAYED_CHANGE', payload: played - (new Date().getTime() - date) / 1000 });
     }, [player]);
 
-    useCreateListener('room-joined', ({ username }: RoomJoinedPayload) => {
+    useCreateListener('room-joined', ({ username, clients }: RoomJoinedPayload) => {
         console.log(`${username} dołączył do pokoju!`);
         dispatch({ type: 'PLAYING_CHANGE', payload: false });
+        dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
     });
 
     return {

@@ -1,4 +1,5 @@
 import ReactPlayer from "react-player";
+import { RoomClient } from "../types";
 
 export interface PlayerState {
     player: ReactPlayer | null;
@@ -8,9 +9,11 @@ export interface PlayerState {
     duration: number;
     seeking: boolean;
     played: number;
+    clients: RoomClient[];
 }
 
 export const defaultPlayerState: PlayerState = {
+    clients: [],
     duration: 0,
     muted: true,
     player: null,
@@ -49,11 +52,19 @@ interface PlayedChange {
     type: 'PLAYED_CHANGE';
     payload: number;
 }
+interface ClientsChange {
+    type: 'CLIENTS_CHANGE',
+    payload: RoomClient[],
+}
 
-export type PlayerAction = PlayingChange | PlayerChange | VolumeChange | MutedChange | DurationChange | ProgressMouseDownChange | ProgressMouseUpChange | PlayedChange;
+export type PlayerAction = PlayingChange | PlayerChange | VolumeChange | MutedChange | DurationChange | ProgressMouseDownChange | ProgressMouseUpChange | PlayedChange | ClientsChange;
 
 export const playerReducer = (state: PlayerState, action: PlayerAction): PlayerState => {
     switch (action.type) {
+        case 'CLIENTS_CHANGE': {
+            return { ...state, clients: action.payload };
+        }
+
         case 'DURATION_CHANGE': {
             return { ...state, duration: action.payload };
         }

@@ -14,17 +14,20 @@ import { ContentWrapper } from "../layout/ContentWrapper";
 import { Main } from "../layout/Main";
 import { Form } from "../form-elements/Form";
 import { LinkSchema } from "../../utils/validation.util";
-import { ClientResponseOK, RoomClient, RoomDataPayload, RoomExitedPayload, RoomJoinedPayload, RoomJoinPayload, RoomSynchronizedPayload, RoomVideoNewPayload } from "../../types";
+import { ClientResponseOK, RoomClient, RoomDataPayload, RoomExitedPayload, RoomJoinPayload, RoomVideoNewPayload } from "../../types";
+import { useRoom } from "../../contexts/room.context";
+import { List } from "../common/List";
+import { Client } from "../common/Client";
 
 export const Room = () => {
     const { socket, socketId } = useSocket();
     const { username, avatar } = useUser();
+    const { dispatch, state } = useRoom();
 
     const { id } = useParams();
 
     const [link, setLink] = useState('');
     const [src, setSrc] = useState('');
-    const [clients, setClients] = useState<RoomClient[]>([]);
 
     const handleClick = () => {
         navigator.clipboard.writeText(window.location.href);
@@ -32,6 +35,10 @@ export const Room = () => {
 
     const onSuccess = (response: ClientResponseOK<string>) => {
         console.log(response.results);
+    };
+
+    const clientsList = () => {
+        return state.clients.map(c => <Client key={c.socketId} client={c} />);
     };
 
     useEffect(() => {
@@ -43,22 +50,19 @@ export const Room = () => {
     }, []);
 
     // for self listeners
-    useCreateListener('room-data', ({ src, clients }: RoomDataPayload) => {
+    useCreateListener('room-data', ({ src }: RoomDataPayload) => {
         setSrc(src);
-        setClients(clients);
     });
 
 
     // for all roommates listeners
-    useCreateListener('room-exited', ({ username }: RoomExitedPayload) => {
+    useCreateListener('room-exited', ({ username, clients }: RoomExitedPayload) => {
         console.log(`${username} opuścił pokoj!`);
+        dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
     });
     useCreateListener('room-video-new', ({ src }: RoomVideoNewPayload) => {
         console.log(src);
         setSrc(src);
-    });
-    useCreateListener('room-synchronized', ({ time }: RoomSynchronizedPayload) => {
-        console.log({ time });
     });
 
     return (
@@ -92,7 +96,9 @@ export const Room = () => {
                     <Player className="room__video" src={src} />
                 </Section>
                 <Section title="Online Clients">
-                    {clients.map(c => username)}
+                    <List className="room__clients-list">
+                        {clientsList()}
+                    </List>
                 </Section>
             </Main>
         </ContentWrapper>
