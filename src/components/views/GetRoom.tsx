@@ -8,7 +8,7 @@ import { ContentWrapper } from "../layout/ContentWrapper";
 import { Main } from "../layout/Main";
 
 export const GetRoom = () => {
-    const { setLoading } = usePromises();
+    const { setLoading, setError } = usePromises();
 
     const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export const GetRoom = () => {
         const { delayTime, response } = await minimalDelayFunction(() => fetchTool('room', 'POST'));
         setTimeout(() => {
             setLoading(false);
-            if (!response.status) return console.log(response.message);
+            if (!response.status) return setError(response.message);
             navigate(`/room/${response.results}`);
         }, delayTime);
     };

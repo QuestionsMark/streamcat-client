@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { LoadingScreen } from "../components/popups/LoadingScreen";
 
 interface Props {
@@ -27,11 +28,10 @@ export const PromisesProvider = ({ children }: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Toasty na odpowiedź od servera
-    // useEffect(() => {
-    //     if(error && !loading) toast(error);
-    //     setError(null);
-    // }, [error, loading]);
+    useEffect(() => {
+        if(error && !loading) toast(error);
+        setError(null);
+    }, [error, loading]);
 
     return (
         <PromisesContext.Provider value={{ error, loading, setError, setLoading }}>

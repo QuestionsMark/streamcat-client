@@ -8,6 +8,7 @@ import { PromisesProvider } from './contexts/promises.context';
 import { SocketProvider } from './contexts/socket.context';
 import { UserProvider } from './contexts/user.context';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './styles/index.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
