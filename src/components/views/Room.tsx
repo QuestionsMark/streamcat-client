@@ -50,9 +50,6 @@ export const Room = () => {
 
 
     // for all roommates listeners
-    useCreateListener('room-joined', ({ username }: RoomJoinedPayload) => {
-        console.log(`${username} dołączył do pokoju!`);
-    });
     useCreateListener('room-exited', ({ username }: RoomExitedPayload) => {
         console.log(`${username} opuścił pokoj!`);
     });

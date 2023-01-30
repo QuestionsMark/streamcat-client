@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import { OnProgressProps } from "react-player/base";
 import { useSocket } from "../contexts/socket.context";
 import { defaultPlayerState, playerReducer } from "../reducers/player.reducer";
-import { VideoPlayRequestPayload, VideoPlayResponsePayload } from "../types";
+import { RoomJoinedPayload, VideoPlayResponsePayload, VideoSeekResponsePayload } from "../types";
 import { useCreateListener } from "./useSocketListener";
 
 export const usePlayer = () => {
@@ -35,12 +35,6 @@ export const usePlayer = () => {
 
     const onPlay = async () => {
         console.log('play');
-        // if (!socket || block) return setBlock(false);
-        // if (!player) return;
-        
-        // const currentTime = player.getCurrentTime();
-        // socket.emit('video-play-request', { currentTime, date: new Date() } as VideoPlayRequestPayload);
-        // setBlock(false);
     };
 
     const onProgress = (state: OnProgressProps) => {
@@ -64,15 +58,22 @@ export const usePlayer = () => {
     useCreateListener('video-play-response', ({ date, played }: VideoPlayResponsePayload) => {
         if (!player) return;
         console.log('Socket');
-        const newDate = new Date().getTime();
-        const timeDifference = (newDate - date) / 1000;
-        console.log(played - timeDifference);
-        
-        player.seekTo(played - timeDifference, 'seconds');
+        player.seekTo(played - (new Date().getTime() - date) / 1000, 'seconds');
         dispatch({ type: 'PLAYING_CHANGE', payload: true });
-    });
+    }, [player]);
 
     useCreateListener('video-pause-response', () => {
+        dispatch({ type: 'PLAYING_CHANGE', payload: false });
+    });
+
+    useCreateListener('video-seek-response', ({ date, played }: VideoSeekResponsePayload) => {
+        if (!player) return;
+        player.seekTo(played - (new Date().getTime() - date) / 1000, 'seconds');
+        // dispatch({ type: 'PLAYED_CHANGE', payload: played - (new Date().getTime() - date) / 1000 });
+    }, [player]);
+
+    useCreateListener('room-joined', ({ username }: RoomJoinedPayload) => {
+        console.log(`${username} dołączył do pokoju!`);
         dispatch({ type: 'PLAYING_CHANGE', payload: false });
     });
 

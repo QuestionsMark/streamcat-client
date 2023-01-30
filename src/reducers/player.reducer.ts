@@ -15,7 +15,7 @@ export const defaultPlayerState: PlayerState = {
     muted: true,
     player: null,
     played: 0,
-    playing: true,
+    playing: false,
     seeking: false,
     volume: 0.1,
 };
