@@ -19,8 +19,8 @@ export const GetRoom = () => {
         <ContentWrapper>
             <Main className="get-room">
                 <Section>
-                    <Title>Get Room</Title>
-                    <Button onClick={handleClick}>
+                    <Title className="get-room__title">Get Your Room</Title>
+                    <Button onClick={handleClick} className="get-room__btn" type="button">
                         Create Room!
                     </Button>
                 </Section>

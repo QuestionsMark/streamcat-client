@@ -73,7 +73,7 @@ body {
         padding: 10px 10px 10px 15px;
         font-size: 18px;
         color: $font-color;
-        background-color: $main-color2;
+        background-color: $main-color;
     }
 
     &__content {
@@ -168,12 +168,14 @@ body {
     }
 
     &--icon {
+        flex-shrink: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 36px;
         height: 36px;
         padding: 0;
+        font-size: 18px;
     }
 }
 

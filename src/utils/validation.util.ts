@@ -8,3 +8,5 @@ export function checkValidation(data: any, schema: ZodSchema): string[] | null {
 };
 
 //Schemas
+
+export const LinkSchema = z.string().url('Enter correct URL.');

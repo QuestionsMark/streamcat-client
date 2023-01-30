@@ -17,7 +17,7 @@ export const useMainListener = () => {
     }, [socket])
 };
 
-export function useCreateListener(name: string, callback: Function) {
+export function useCreateListener(name: string, callback: Function, dependencies: any[] = []) {
     const { socket } = useSocket();
 
     useEffect(() => {
@@ -26,5 +26,5 @@ export function useCreateListener(name: string, callback: Function) {
             callback(data);
         })
         return () => { socket.off(name) };
-    }, [socket]);
+    }, [socket, ...dependencies]);
 };
