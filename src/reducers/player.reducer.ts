@@ -1,5 +1,5 @@
 import ReactPlayer from "react-player";
-import { RoomClient } from "../types";
+import { Message, RoomClient } from "../types";
 
 export interface PlayerState {
     player: ReactPlayer | null;
@@ -10,11 +10,13 @@ export interface PlayerState {
     seeking: boolean;
     played: number;
     clients: RoomClient[];
+    messages: Message[];
 }
 
 export const defaultPlayerState: PlayerState = {
     clients: [],
     duration: 0,
+    messages: [],
     muted: true,
     player: null,
     played: 0,
@@ -56,8 +58,16 @@ interface ClientsChange {
     type: 'CLIENTS_CHANGE',
     payload: RoomClient[],
 }
+interface MessagesPush {
+    type: 'MESSAGES_PUSH',
+    payload: {
+        id: string;
+        message: string;
+        username: string;
+    },
+}
 
-export type PlayerAction = PlayingChange | PlayerChange | VolumeChange | MutedChange | DurationChange | ProgressMouseDownChange | ProgressMouseUpChange | PlayedChange | ClientsChange;
+export type PlayerAction = PlayingChange | PlayerChange | VolumeChange | MutedChange | DurationChange | ProgressMouseDownChange | ProgressMouseUpChange | PlayedChange | ClientsChange | MessagesPush;
 
 export const playerReducer = (state: PlayerState, action: PlayerAction): PlayerState => {
     switch (action.type) {
@@ -67,6 +77,16 @@ export const playerReducer = (state: PlayerState, action: PlayerAction): PlayerS
 
         case 'DURATION_CHANGE': {
             return { ...state, duration: action.payload };
+        }
+
+        case 'MESSAGES_PUSH': {
+            const date = new Date().toLocaleTimeString('en-US');
+            const { id, message, username } = action.payload;
+            if (state.messages.length < 30) {
+                return { ...state, messages: [...state.messages, { date, id, message, username }] };
+            }
+            const newMessages = [...state.messages].splice(1, 29);
+            return { ...state, messages: [...newMessages, { date, id, message, username }] };
         }
 
         case 'MUTED_CHANGE': {

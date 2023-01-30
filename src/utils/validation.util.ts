@@ -9,4 +9,9 @@ export function checkValidation(data: any, schema: ZodSchema): string[] | null {
 
 //Schemas
 
-export const LinkSchema = z.string().url('Enter correct URL.');
+export const LinkSchema = z.string()
+    .url('Enter correct URL.');
+
+export const MessageSchema = z.string()
+    .min(1, 'Message should contain 1 to 500 characters.')
+    .max(500, 'Message should contain 1 to 500 characters.');

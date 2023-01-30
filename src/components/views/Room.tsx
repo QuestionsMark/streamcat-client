@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { MdContentCopy } from "react-icons/md";
 import { BiSearchAlt } from "react-icons/bi";
 import { useParams } from "react-router-dom";
@@ -13,11 +13,14 @@ import { Player } from "../common/Player";
 import { ContentWrapper } from "../layout/ContentWrapper";
 import { Main } from "../layout/Main";
 import { Form } from "../form-elements/Form";
-import { LinkSchema } from "../../utils/validation.util";
-import { ClientResponseOK, RoomClient, RoomDataPayload, RoomExitedPayload, RoomJoinPayload, RoomVideoNewPayload } from "../../types";
+import { checkValidation, LinkSchema, MessageSchema } from "../../utils/validation.util";
+import { ChatMessagePayload, ClientResponseOK, RoomDataPayload, RoomExitedPayload, RoomJoinPayload, RoomVideoNewPayload } from "../../types";
 import { useRoom } from "../../contexts/room.context";
 import { List } from "../common/List";
 import { Client } from "../common/Client";
+import { Aside } from "../layout/Aside";
+import { TbSend } from 'react-icons/tb';
+import { Message } from "../common/Message";
 
 export const Room = () => {
     const { socket, socketId } = useSocket();
@@ -26,7 +29,10 @@ export const Room = () => {
 
     const { id } = useParams();
 
+    const listRef = useRef<HTMLUListElement>(null);
+
     const [link, setLink] = useState('');
+    const [message, setMessage] = useState('');
     const [src, setSrc] = useState('');
 
     const handleClick = () => {
@@ -37,9 +43,29 @@ export const Room = () => {
         console.log(response.results);
     };
 
+    const handleMessageSend = async (e: FormEvent) => {
+        e.preventDefault();
+        const errors = checkValidation(message, MessageSchema);
+        if (errors || !socket) return console.log(errors);
+        socket.emit('chat-message-request', { message, username: username || socketId } as Omit<ChatMessagePayload, 'id'>);
+        setMessage('');
+    };
+
     const clientsList = () => {
         return state.clients.map(c => <Client key={c.socketId} client={c} />);
     };
+
+    const messagesList = () => {
+        return state.messages.map(m => <Message key={m.id} message={m} />);
+    };
+
+    useEffect(() => {
+        if (!listRef.current) return
+        listRef.current.scroll({
+            behavior: 'smooth',
+            top: 100000000,
+        });
+    }, [listRef.current, state.messages]);
 
     useEffect(() => {
         if (!socket) return;
@@ -56,21 +82,28 @@ export const Room = () => {
 
 
     // for all roommates listeners
-    useCreateListener('room-exited', ({ username, clients }: RoomExitedPayload) => {
-        console.log(`${username} opuścił pokoj!`);
+    useCreateListener('room-exited', ({ clients, id, username }: RoomExitedPayload) => {
+        console.log();
         dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
+        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message: `${username} left the room!`, username } })
     });
     useCreateListener('room-video-new', ({ src }: RoomVideoNewPayload) => {
         console.log(src);
         setSrc(src);
     });
+    useCreateListener('chat-message-response', ({ id, message, username }: ChatMessagePayload) => {
+        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message, username } });
+    })
 
     return (
-        <ContentWrapper>
+        <ContentWrapper withAside>
             <Main className="room">
-                <Section title="Share link" className="room__share-link">
+                <Section
+                    title="Share this link to invite your friends to watch together:"
+                    className="room__share-link"
+                >
                     <Paragraph indent={false} className="room__share-link-text">
-                        Share this link to invite your friends to watch together: <span>{window.location.href}</span>
+                        {window.location.href}
                     </Paragraph>
                     <Button onClick={handleClick} className="btn--icon" type="button">
                         <MdContentCopy className="room__copy-icon" />
@@ -101,6 +134,28 @@ export const Room = () => {
                     </List>
                 </Section>
             </Main>
+            <Aside className="room-aside">
+                <Section title="StreamCat Chat <3" className="room__chat" contentClassName="room__chat-content">
+                    <List ref={listRef} className="room__chat-list">
+                        {messagesList()}
+                    </List>
+                    <form
+                        className="room__chat-panel"
+                        onSubmit={handleMessageSend}
+                    >
+                        <Input
+                            type="text"
+                            value={message}
+                            onChange={e => setMessage(e.target.value)}
+                            placeholder="Message"
+                            className="room__chat-inp"
+                        />
+                        <Button type="submit" className="btn--icon room__chat-submit">
+                            <TbSend className="room__chat-icon" />
+                        </Button>
+                    </form>
+                </Section>
+            </Aside>
         </ContentWrapper>
     );
 };

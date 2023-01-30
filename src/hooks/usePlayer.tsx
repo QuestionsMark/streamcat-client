@@ -68,10 +68,10 @@ export const usePlayer = () => {
         // dispatch({ type: 'PLAYED_CHANGE', payload: played - (new Date().getTime() - date) / 1000 });
     }, [player]);
 
-    useCreateListener('room-joined', ({ username, clients }: RoomJoinedPayload) => {
-        console.log(`${username} dołączył do pokoju!`);
+    useCreateListener('room-joined', ({ clients, id, username }: RoomJoinedPayload) => {
         dispatch({ type: 'PLAYING_CHANGE', payload: false });
         dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
+        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message: `${username} joined the room!`, username: 'System' } });
     });
 
     return {

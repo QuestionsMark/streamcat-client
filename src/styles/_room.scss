@@ -1,4 +1,13 @@
 .room {
+    &-aside {
+        position: sticky;
+        top: calc(var(--header-height) + 15px);
+        display: flex;
+        flex-direction: column;
+        max-width: 340px;
+        height: calc(100vh - 30px - var(--header-height));
+    }
+
     &__share-link {
         & > .section__content {
             display: flex;
@@ -6,7 +15,7 @@
             align-items: center;
         }
 
-        &-text > span {
+        &-text {
             color: $main-color2;
             font-weight: bold;
         }
@@ -57,6 +66,57 @@
             color: $main-color;
             font-size: 12px;
             font-weight: bold;
+            word-wrap: break-word;
+        }
+    }
+
+    &__chat {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        &-content {
+            height: calc(100% - 42px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-list {
+            flex-grow: 1;
+            // max-height: calc(100% - 66px);
+            overflow-y: auto;
+        }
+
+        &-panel {
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+        }
+
+        &-item {
+            position: relative;
+            width: 100%;
+            padding: 5px;
+        }
+
+        &-date {
+            position: absolute;
+            right: 5px;
+            top: 12px;
+            font-size: 8px;
+        }
+
+        &-username {
+            display: inline-block;
+            font-size: 12px;
+            margin: 0 8px 5px 0;
+        }
+
+        &-text {
+            display: inline-block;
+            width: 100%;
+            flex-grow: 1;
+            font-size: 11px;
             word-wrap: break-word;
         }
     }
