@@ -1,0 +1,30 @@
+.room {
+    &__share-link {
+        & > .section__content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &-text > span {
+            color: $main-color2;
+            font-weight: bold;
+        }
+    }
+
+    &__video {
+        width: 100%;
+        aspect-ratio: 16/9;
+
+        &-form {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 15px 0;
+
+            &-icon {
+                font-size: 22px;
+            }
+        }
+    }
+}
