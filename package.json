@@ -13,8 +13,10 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.7.1",
+    "react-player": "^2.11.0",
     "react-router-dom": "^6.7.0",
     "react-spinners": "^0.13.8",
+    "screenfull": "^6.0.2",
     "socket.io-client": "^4.5.4",
     "zod": "^3.20.2",
     "zod-validation-error": "^0.3.0"
