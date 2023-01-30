@@ -1,6 +1,6 @@
 import { Image } from '../common/Image';
 import { List } from '../common/List';
-import warningIcon from '../../assets/warning.svg';
+import { TiWarningOutline } from 'react-icons/ti';
 
 interface Props {
     errors: string[];
@@ -14,7 +14,7 @@ export const ErrorsList = ({ errors }: Props) => {
     return (
         <div className="form__errors shadow">
             <div className="form__errors-icon-wrapper">
-                <Image alt="warning icon" src={warningIcon} isStatic className="form__errors-icon"/>
+                <TiWarningOutline className="form__errors-icon"/>
             </div>
             <List className="form__errors-list">
                 {errorsList()}

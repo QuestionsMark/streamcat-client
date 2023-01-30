@@ -1,6 +1,6 @@
 import { FormEvent, ReactNode, useState } from "react";
 import { ZodSchema } from "zod/lib";
-import { usePromisesContext } from "../../contexts/promises.context";
+import { usePromises } from "../../contexts/promises.context";
 import { Method } from "../../types";
 import { fetchTool, minimalDelayFunction } from "../../utils/api.util";
 import { checkValidation } from "../../utils/validation.util";
@@ -17,26 +17,31 @@ interface Props {
     validationSchema: ZodSchema;
     className?: string;
     errorNotificator?: boolean;
+    preErrorNotificator?: boolean;
     onError?: (response: any) => void;
     onSuccess?: (response: any) => void;
 }
 
-export const Form = ({ children, form, options, onError, onSuccess, validationSchema, className, errorNotificator }: Props) => {
+export const Form = ({ children, form, options, onError, onSuccess, validationSchema, className, errorNotificator, preErrorNotificator }: Props) => {
     const { path, body, method } = options;
 
-    const { setError, setLoading } = usePromisesContext();
+    const { setError, setLoading } = usePromises();
 
     const [errors, setErrors] = useState<string[] | null>(null);
 
     const onSubmit = async (e: FormEvent) => {
         e.preventDefault();      
         const errors = checkValidation(form, validationSchema);
-        if (errors) return setErrors(errors);
+        if (errors) {
+            if (preErrorNotificator) {
+                setErrors(errors);
+            }
+            return;
+        };
         setErrors(null);
 
         setLoading(true);
         const { delayTime, response } = await minimalDelayFunction(() => fetchTool(path, method, body));
-        // const { delayTime, response } = { delayTime: 500, response: { status: false, results: 'To jest odpowiedz od servera!', message: 'Error to jest' } }
 
         setTimeout(() => {
             setLoading(false);

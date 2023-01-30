@@ -5,7 +5,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     onClick?: () => void;
 }
 
-export const Button = ({ className, children, onClick, ...rest }: Props) => {
+export const Button = ({ className, children, onClick, type = 'submit', ...rest }: Props) => {
     const handleClick = (e: MouseEvent) => {
         if (e.currentTarget.getAttribute("type") === "submit") return;
         e.preventDefault();
@@ -14,5 +14,5 @@ export const Button = ({ className, children, onClick, ...rest }: Props) => {
         }
     };
 
-    return <button {...rest} className={`btn${className ? ' ' + className : ''}`} onClick={handleClick}>{children}</button>;
+    return <button {...rest} type={type} className={`btn${className ? ' ' + className : ''}`} onClick={handleClick}>{children}</button>;
 };
