@@ -14,7 +14,7 @@ import { ContentWrapper } from "../layout/ContentWrapper";
 import { Main } from "../layout/Main";
 import { Form } from "../form-elements/Form";
 import { checkValidation, LinkSchema, MessageSchema } from "../../utils/validation.util";
-import { ChatMessagePayload, ClientResponseOK, RoomDataPayload, RoomExitedPayload, RoomJoinPayload, RoomVideoNewPayload } from "../../types";
+import { ChatMessagePayload, ClientResponseOK, ClientSettingsChangePayload, RoomDataPayload, RoomExitedPayload, RoomJoinPayload, RoomVideoNewPayload } from "../../types";
 import { useRoom } from "../../contexts/room.context";
 import { List } from "../common/List";
 import { Client } from "../common/Client";
@@ -93,6 +93,9 @@ export const Room = () => {
     });
     useCreateListener('chat-message-response', ({ id, message, username }: ChatMessagePayload) => {
         dispatch({ type: 'MESSAGES_PUSH', payload: { id, message, username } });
+    })
+    useCreateListener('client-settings-change', ({ clients }: ClientSettingsChangePayload) => {
+        dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
     })
 
     return (
