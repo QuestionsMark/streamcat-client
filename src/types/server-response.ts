@@ -1,16 +1,16 @@
 export type Method = 'POST' | 'DELETE' | 'PATCH' | 'PUT' | 'GET';
 
-// Typy backendowe
-export interface ServerResponse {
-    message: string;
-}
-
-export interface PaginationResponse<T> {
+export interface ServerSuccessfullResponse<T> {
     results: T;
-    count: number;
+    count?: number;
+}
+export interface ServerErrorResponse {
+    message: string;
+    problems?: string[];
 }
 
-// Typy frontendowe
+export type ServerResponse<T> = ServerSuccessfullResponse<T> | ServerErrorResponse;
+
 export interface ClientResponseOK<T> {
     status: true;
     results: T;
@@ -19,5 +19,6 @@ export interface ClientResponseOK<T> {
 export interface ClientResponseError {
     status: false;
     message: string;
+    problems?: string[];
 }
 export type ClientResponse<T> = ClientResponseOK<T> | ClientResponseError;

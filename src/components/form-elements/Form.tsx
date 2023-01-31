@@ -2,7 +2,7 @@ import { FormEvent, ReactNode, useState } from "react";
 import { ZodSchema } from "zod/lib";
 import { usePromises } from "../../contexts/promises.context";
 import { Method } from "../../types";
-import { fetchTool, minimalDelayFunction } from "../../utils/api.util";
+import { fetchTool, minimalDelayFunction, showProblem } from "../../utils/api.util";
 import { checkValidation } from "../../utils/validation.util";
 import { ErrorsList } from "./ErrorsList";
 
@@ -33,10 +33,8 @@ export const Form = ({ children, form, options, onError, onSuccess, validationSc
         e.preventDefault();      
         const errors = checkValidation(form, validationSchema);
         if (errors) {
-            if (preErrorNotificator) {
-                setErrors(errors);
-            }
-            return;
+            if (preErrorNotificator) return setErrors(errors);
+            return setError(showProblem({ message: 'Creepy!', problems: errors }));
         };
         setErrors(null);
 

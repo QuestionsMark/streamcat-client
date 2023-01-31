@@ -21,6 +21,8 @@ import { Client } from "../common/Client";
 import { Aside } from "../layout/Aside";
 import { TbSend } from 'react-icons/tb';
 import { Message } from "../common/Message";
+import { toast } from "react-toastify";
+import { showProblem } from "../../utils/api.util";
 
 export const Room = () => {
     const { socket, socketId } = useSocket();
@@ -35,18 +37,20 @@ export const Room = () => {
     const [message, setMessage] = useState('');
     const [src, setSrc] = useState('');
 
-    const handleClick = () => {
+    const handleCopy = () => {
         navigator.clipboard.writeText(window.location.href);
+        toast('Successfully copied!');
     };
 
     const onSuccess = (response: ClientResponseOK<string>) => {
-        console.log(response.results);
+        toast(response.results);
     };
 
     const handleMessageSend = async (e: FormEvent) => {
         e.preventDefault();
         const errors = checkValidation(message, MessageSchema);
-        if (errors || !socket) return console.log(errors);
+        if (errors) return toast(showProblem({ message: 'Incorrect message: ', problems: errors }));
+        if (!socket) return;
         socket.emit('chat-message-request', { message, username: username || socketId } as Omit<ChatMessagePayload, 'id'>);
         setMessage('');
     };
@@ -83,12 +87,10 @@ export const Room = () => {
 
     // for all roommates listeners
     useCreateListener('room-exited', ({ clients, id, username }: RoomExitedPayload) => {
-        console.log();
         dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
-        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message: `${username} left the room!`, username } })
+        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message: `${username} left the room!`, username: 'StreamCat' } })
     });
     useCreateListener('room-video-new', ({ src }: RoomVideoNewPayload) => {
-        console.log(src);
         setSrc(src);
     });
     useCreateListener('chat-message-response', ({ id, message, username }: ChatMessagePayload) => {
@@ -108,7 +110,7 @@ export const Room = () => {
                     <Paragraph indent={false} className="room__share-link-text">
                         {window.location.href}
                     </Paragraph>
-                    <Button onClick={handleClick} className="btn--icon" type="button">
+                    <Button onClick={handleCopy} className="btn--icon room__share-link-btn" type="button">
                         <MdContentCopy className="room__copy-icon" />
                     </Button>
                 </Section>
@@ -124,8 +126,8 @@ export const Room = () => {
                         className="room__video-form"
                         onSuccess={onSuccess}
                     >
-                        <Input className="room__inp" value={link} onChange={e => setLink(e.target.value)} placeholder="Paste YouTube link here" />
-                        <Button className="btn--icon">
+                        <Input type="url" className="room__inp" value={link} onChange={e => setLink(e.target.value)} placeholder="Paste YouTube link here" />
+                        <Button className="btn--icon" disabled={!link}>
                             <BiSearchAlt className="room__video-form-icon" />
                         </Button>
                     </Form>

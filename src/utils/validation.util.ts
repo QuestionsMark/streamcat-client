@@ -10,16 +10,17 @@ export function checkValidation(data: any, schema: ZodSchema): string[] | null {
 //Schemas
 
 export const LinkSchema = z.string()
-    .url('Enter correct URL.');
+    .url('Enter correct URL. at');
 
 export const MessageSchema = z.string()
-    .min(1, 'Message should contain 1 to 500 characters.')
-    .max(500, 'Message should contain 1 to 500 characters.');
+    .min(1, 'Message should contain 1 to 500 characters. at')
+    .max(500, 'Message should contain 1 to 500 characters. at');
 
 export const AccountSettingsSchema = z.object({
     avatar: z.string()
         .url('Enter correct URL.'),
     username: z.string()
-        .min(1, 'Username should contain 1 to 20 characters')
-        .max(20, 'Username should contain 1 to 20 characters'),
+        .min(1, 'Username should contain 1 to 20 characters.')
+        .max(20, 'Username should contain 1 to 20 characters.')
+        .refine(val => val !== 'StreamCat', 'It is not allowed to impersonate little cute cats.'),
 });
