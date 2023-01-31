@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { getLocalStorage, setLocalStorage } from '../utils/local-storage-helper.util';
 
-export function useLocalStorage(key: string, initialValue: any) {
+type LocalStorageValue<T> = [T, Dispatch<SetStateAction<T>>]
 
-    const [value, setValue] = useState(() => {
+export function useLocalStorage<T>(key: string, initialValue: T): LocalStorageValue<T> {
+
+    const [value, setValue] = useState<T>(() => {
         const storageValue = getLocalStorage(key);
         if (storageValue !== null) return storageValue;
         if (typeof initialValue === 'function') {

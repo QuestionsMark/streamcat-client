@@ -1,15 +1,11 @@
-import { ClientResponse, ClientResponseError, Method } from '../types';
+import { ClientResponse, ClientResponseError, Method, ServerErrorResponse } from '../types';
 import { HOST_ADDRESS } from '../../config/config';
-
-interface ResponseProblem {
-    message: string;
-}
 
 type UploadMethod = 'POST' | 'PATCH' | 'PUT';
 
-const showProblem = (response: Response, res: ResponseProblem): ClientResponseError => {
+const setErrorResponse = (response: Response, res: ServerErrorResponse): ClientResponseError => {
     console.warn(res.message);
-    if (response.status === 400) return { message: res.message, status: false };
+    if (response.status === 400) return { message: res.message, status: false, problems: res.problems };
     return { message: res.message, status: false };
 };
 
@@ -35,7 +31,7 @@ export async function fetchTool<T>(path: string, method: Method = 'GET', body: a
         });
         const res = await response.json();
         if (response.ok) return { ...res, status: true };
-        return showProblem(response, res);
+        return setErrorResponse(response, res);
     } catch (e) {
         return { message: 'Wystąpił błąd. Spróbuj jeszcze raz.', status: false };
     }
@@ -50,8 +46,13 @@ export async function fetchWithFileUpload<T>(path: string, method: UploadMethod 
         });
         const res = await response.json();
         if (response.ok) return { ...res, status: true };
-        return showProblem(response, res);
+        return setErrorResponse(response, res);
     } catch (error) {
         return { message: 'Wystąpił błąd. Spróbuj jeszcze raz.', status: false };
     }
 };
+
+export const showProblem = (response: ServerErrorResponse): string => {
+    if (response.problems && response.problems.length !== 0) return `${response.message} ${response.problems.join(' ')}`;
+    return response.message;
+} 

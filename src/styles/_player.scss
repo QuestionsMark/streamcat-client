@@ -15,6 +15,13 @@
             flex-basis: 100%;
         }
 
+        &-volume-bar {
+            display: none;
+            @media (min-width: $md-mobile) {
+                display: block;
+            }
+        }
+
         &-duration {
             flex-grow: 1;
             font-family: $const-font-family;

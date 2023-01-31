@@ -6,31 +6,31 @@ import { useCreateListener } from "./useSocketListener";
 
 export const usePlayer = () => {
     const { dispatch, state } = useRoom();
-    const { played, player, seeking } = state;
+    const { player, seeking } = state;
 
     const onEnded = () => {
         dispatch({ type: 'PLAYING_CHANGE', payload: false });
     };
 
     const onError = () => {
-        console.log('error');
+        // console.log('error');
     };
 
     const onPause = () => {
-        console.log('pause');
+        // console.log('pause');
     };
 
     const onSeek = () => {
-        console.log('seek');
+        // console.log('seek');
     }
 
     const onDuration = (duration: number) => {
-        console.log('duration');
+        // console.log('duration');
         dispatch({ type: 'DURATION_CHANGE', payload: duration });
     }
 
     const onPlay = async () => {
-        console.log('play');
+        // console.log('play');
     };
 
     const onProgress = (state: OnProgressProps) => {
@@ -39,21 +39,18 @@ export const usePlayer = () => {
     };
 
     const onReady = (p: ReactPlayer) => {
-        console.log('ready');
+        // console.log('ready');
         if (player) return;
-        
-        console.log(p.getInternalPlayer());
         dispatch({ type: 'PLAYER_CHANGE', payload: p });
     };
 
     const onStart = () => {
-        console.log('start');
+        // console.log('start');
         if (!player) return;
     };
 
     useCreateListener('video-play-response', ({ date, played }: VideoPlayResponsePayload) => {
         if (!player) return;
-        console.log('Socket');
         player.seekTo(played - (new Date().getTime() - date) / 1000, 'seconds');
         dispatch({ type: 'PLAYING_CHANGE', payload: true });
     }, [player]);
@@ -65,13 +62,12 @@ export const usePlayer = () => {
     useCreateListener('video-seek-response', ({ date, played }: VideoSeekResponsePayload) => {
         if (!player) return;
         player.seekTo(played - (new Date().getTime() - date) / 1000, 'seconds');
-        // dispatch({ type: 'PLAYED_CHANGE', payload: played - (new Date().getTime() - date) / 1000 });
     }, [player]);
 
     useCreateListener('room-joined', ({ clients, id, username }: RoomJoinedPayload) => {
         dispatch({ type: 'PLAYING_CHANGE', payload: false });
         dispatch({ type: 'CLIENTS_CHANGE', payload: clients });
-        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message: `${username} joined the room!`, username: 'System' } });
+        dispatch({ type: 'MESSAGES_PUSH', payload: { id, message: `${username} joined the room!`, username: 'StreamCat' } });
     });
 
     return {

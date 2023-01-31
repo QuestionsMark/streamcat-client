@@ -11,7 +11,7 @@ export const Client = ({ client }: Props) => {
     const { host, socketId, username, avatar } = client;
     return (
         <li className="room__clients-item">
-            <Image alt={`${username}'s avatar`} src={avatar ? avatar : guestImg} isStatic={avatar ? false : true} className="room__clients-img"/>
+            <Image alt={`${username}'s avatar`} src={avatar ? avatar : guestImg} isStatic={avatar ? false : true} isStranger={avatar ? true : false} className="room__clients-img" />
             <h3 className="room__clients-username">{username}</h3>
         </li>
     );

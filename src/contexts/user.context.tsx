@@ -1,10 +1,11 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface UserContextValue {
-    username?: string;
-    avatar?: string;
-    setUsername: Dispatch<SetStateAction<string | undefined>>;
-    setAvatar: Dispatch<SetStateAction<string | undefined>>;
+    username: string;
+    avatar: string;
+    setUsername: Dispatch<SetStateAction<string>>;
+    setAvatar: Dispatch<SetStateAction<string>>;
 }
 
 interface Props {
@@ -16,8 +17,8 @@ const UserContext = createContext<UserContextValue>(null!);
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: Props) => {
-    const [username, setUsername] = useState<string | undefined>(undefined);
-    const [avatar, setAvatar] = useState<string | undefined>(undefined);
+    const [username, setUsername] = useLocalStorage<string>('username', '');
+    const [avatar, setAvatar] = useLocalStorage<string>('avatar', '');
 
     return (
         <UserContext.Provider value={{ avatar, username, setAvatar, setUsername }}>
