@@ -4,12 +4,17 @@
     top: 0;
     right: 0;
     display: flex;
-    gap: 150px;
-    height: 80px;
+    gap: 50px;
+    height: var(--header-height);
     padding: 15px;
     border-bottom: 2px solid $main-color;
     background-color: $header-background-color;
     z-index: 1000;
+    overflow-x: auto;
+    
+    @media (min-width: $sm-pc) {
+        gap: 150px;
+    }
 }
 
 .logo {
@@ -18,7 +23,10 @@
     gap: 15px;
 
     &__img {
-        width: 50px;
+        width: 40px;
+        @media (min-width: $md-mobile) {
+            width: 50px;
+        }
     }
 
     &__brand-name {
@@ -40,7 +48,7 @@
         display: block;
         width: max-content;
         padding: 0 15px;
-        line-height: 50px;
+        line-height: 30px;
         color: $font-color2;
         font-weight: bold;
         transition: color 0.2s;
@@ -53,6 +61,10 @@
         &.active {
             color: $main-color2;
         }
+        
+        @media (min-width: $md-mobile) {
+            line-height: 50px;
+        }
     }
 }
 
@@ -63,10 +75,14 @@
     width: 350px;
 
     &__icon {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        aspect-ratio: 1/1;
         border-radius: 50%;
         color: $main-color;
+        
+        @media (min-width: $md-mobile) {
+            width: 50px;
+        }
     }
 
     &__loading {
