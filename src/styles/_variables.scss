@@ -1,0 +1,23 @@
+$main-color: #972a22;
+$main-color2: #99E0F7;
+$header-background-color: #161515;
+$font-color: #cfcfcf;
+$font-color2 : #eeeeee;
+
+$sm-mobile: 400px;
+$md-mobile: 520px;
+$lg-mobile: 780px;
+$sm-pc: 1024px;
+$md-pc: 1366px;
+$lg-pc: 1500px;
+
+$main-font-family: 'Montserrat Alternates', sans-serif;
+$const-font-family: 'Roboto Condensed', sans-serif;
+
+:root {
+    --header-height: 60px;
+    
+    @media (min-width: $md-mobile) {
+        --header-height: 80px;
+    }
+}

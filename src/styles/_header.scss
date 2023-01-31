@@ -1,0 +1,150 @@
+.header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 50px;
+    height: var(--header-height);
+    padding: 15px;
+    border-bottom: 2px solid $main-color;
+    background-color: $header-background-color;
+    z-index: 1000;
+    overflow-x: auto;
+    
+    @media (min-width: $sm-pc) {
+        gap: 150px;
+    }
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    &__img {
+        width: 40px;
+        @media (min-width: $md-mobile) {
+            width: 50px;
+        }
+    }
+
+    &__brand-name {
+        color: $main-color;
+        & > span {
+            color: $main-color2;
+        }
+    }
+}
+
+.nav {
+    flex-grow: 1;
+    
+    &__list {
+        display: flex;
+    }
+
+    &__link {
+        display: block;
+        width: max-content;
+        padding: 0 15px;
+        line-height: 30px;
+        color: $font-color2;
+        font-weight: bold;
+        transition: color 0.2s;
+
+        &:hover {
+            text-decoration: none;
+            color: $main-color2;
+        }
+        
+        &.active {
+            color: $main-color2;
+        }
+        
+        @media (min-width: $md-mobile) {
+            line-height: 50px;
+        }
+    }
+}
+
+.account-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 350px;
+
+    &__icon {
+        width: 40px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        color: $main-color;
+        
+        @media (min-width: $md-mobile) {
+            width: 50px;
+        }
+    }
+
+    &__loading {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__content {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__id {
+        font-size: 14px;
+    }
+
+    &__settings {
+        &-content {
+            width: calc(100% - 22px);
+            max-width: 400px;
+        }
+
+        &-form {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            height: 400px;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: $header-background-color;
+        }
+
+        &-close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            padding: 0;
+            background-color: transparent;
+            color: $main-color;
+            font-size: 24px;
+
+            &:hover {
+                background-color: transparent;
+                color: lighten($main-color, 10%);
+            }
+        }
+
+        &-title {
+            margin-bottom: 30px;
+        }
+
+        &-submit {
+            display: block;
+            margin: auto 0 0;
+        }
+    }
+}
