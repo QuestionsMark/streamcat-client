@@ -12,7 +12,7 @@ export const App = () => {
             <Router />
             <ToastContainer
                 theme={'dark'}
-                progressStyle={{background: '#68aec5'}}
+                progressStyle={{ background: '#68aec5' }}
                 position="top-right"
             />
         </div>
