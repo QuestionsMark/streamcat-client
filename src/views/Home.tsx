@@ -1,10 +1,10 @@
-import { Image } from "../common/Image";
-import { Paragraph } from "../common/Paragraph";
-import { Section } from "../common/Section";
-import { ContentWrapper } from "../layout/ContentWrapper";
-import { Main } from "../layout/Main";
+import { Image } from "../components/common/Image";
+import { Paragraph } from "../components/common/Paragraph";
+import { Section } from "../components/common/Section";
+import { ContentWrapper } from "../components/layout/ContentWrapper";
+import { Main } from "../components/layout/Main";
 
-import icon from '../../assets/icon.ico';
+import icon from '../assets/icon.ico';
 import { Link } from "react-router-dom";
 
 export const Home = () => {
@@ -13,7 +13,7 @@ export const Home = () => {
             <Main className="home">
                 <Section title="StreamCat">
                     <Paragraph>
-                        StreamCat is a streaming-based website that imitates famous platforms like: YouTube, Twitch, Watch2Gether, etc. The main advantage of this platform is the small number of users, thanks to which server delays are minimal and the data flow is express. 
+                        StreamCat is a streaming-based website that imitates famous platforms like: YouTube, Twitch, Watch2Gether, etc. The main advantage of this platform is the small number of users, thanks to which server delays are minimal and the data flow is express.
                     </Paragraph>
                     <Image alt="StreamCat icon" src={icon} isStatic className="home__image" />
                     <Paragraph>
