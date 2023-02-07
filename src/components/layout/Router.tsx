@@ -2,9 +2,9 @@ import { Routes, Route } from 'react-router-dom';
 import { RoomProvider } from '../../contexts/room.context';
 import { useSocket } from '../../contexts/socket.context';
 import { LoadingScreen } from '../popups/LoadingScreen';
-import { GetRoom } from '../views/GetRoom';
-import { Home } from '../views/Home';
-import { Room } from '../views/Room';
+import { GetRoom } from '../../views/GetRoom';
+import { Home } from '../../views/Home';
+import { Room } from '../../views/Room';
 
 export const Router = () => {
     const { socketId } = useSocket();

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { usePromises } from "../../contexts/promises.context";
-import { fetchTool, minimalDelayFunction } from "../../utils/api.util";
-import { Button } from "../common/Button";
-import { Section } from "../common/Section";
-import { Title } from "../common/Title";
-import { ContentWrapper } from "../layout/ContentWrapper";
-import { Main } from "../layout/Main";
+import { usePromises } from "../contexts/promises.context";
+import { fetchTool, minimalDelayFunction } from "../utils/api.util";
+import { Button } from "../components/common/Button";
+import { Section } from "../components/common/Section";
+import { Title } from "../components/common/Title";
+import { ContentWrapper } from "../components/layout/ContentWrapper";
+import { Main } from "../components/layout/Main";
 
 export const GetRoom = () => {
     const { setLoading, setError } = usePromises();
